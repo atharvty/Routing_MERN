@@ -1,19 +1,32 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 const app = express();
 
-const middleware = (req,res,next) =>{
-    console.log(`middleware running just fine`);
-    next();
+dotenv.config({path: './config.env'});
+
+const PORT = process.env.PORT;
+const User  = require('./model/userSchema');
+app.use(express.json());
+app.use(require('./router/auth'));
+
+
+
+
+// const middleware = (req,res,next) =>{
+//     console.log(`middleware running just fine`);
+//     next();
     
-}
- middleware();
+// }
+//  middleware();
+require('./db/conn');
 
 
 app.get('/' ,(req,res) =>{
     res.send(`hello from server side `);
 });
 
-app.get('/about' ,middleware, (req,res) =>{
+app.get('/about' , (req,res) =>{
     res.send(`hello from about side `);
 });
 
@@ -23,7 +36,7 @@ app.get('/contact' ,(req,res) =>{
 
 
 app.listen(4000,()=>{
-    console.log(`server is running on port 40000`)
+    console.log(`server is running on port ${PORT}`)
 })
 
 
